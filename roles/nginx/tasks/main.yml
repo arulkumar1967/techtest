@@ -1,0 +1,28 @@
+ - name: Python-pip is present
+   apt: name=python-pip state=present
+   tags: [docker]
+
+ - name: Install Docker-py
+   pip: name=docker-py state=present
+   tags: [docker]
+
+ - name: upload the site directory to the docker host
+   synchronize: src=nginx dest=/tmp
+   register: sync_result
+
+ - name: Build Docker image from Dockerfile
+   docker_image:
+     name: nginx_image
+     path: /tmp/nginx
+     state: build
+
+ - name: Running the container
+   docker_container:
+     name: mynginx
+     image: nginx_image
+     ports:
+       - "80:80"
+     state: started
+
+ - name: Check if container is running
+   shell: docker ps
