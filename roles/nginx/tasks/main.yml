@@ -7,7 +7,7 @@
    tags: [docker]
 
  - name: upload the site directory to the docker host
-   synchronize: src=nginx dest=/tmp
+   synchronize: src=../../../nginx dest=/tmp
    register: sync_result
 
  - name: Build Docker image from Dockerfile
